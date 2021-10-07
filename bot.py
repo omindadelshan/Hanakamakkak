@@ -37,5 +37,29 @@ def start(client, message):
                     InlineKeyboardButton("Support" ,url="https://t.me/lntechnical") ],
                  [InlineKeyboardButton("Subscribe", url="https://youtube.com/c/LNtechnical") ]          ]        ) )
                  
-                 
+@app.on_message(filters.regex("^(http|https|www\.)"))
+def start(client, message):
+    ms = message.reply_text("```Trying to web scrap .........```", reply_to_message_id = message.message_id)
+    msg_id = message.chat.id
+    html_url = message.text
+    try:
+    	page = re.get(html_url)
+    	soup = BeautifulSoup(page.txt,'html.parser')
+    except Exception as e:
+    	ms.edit("```Error : {e}```")
+    	return
+    f = open(f"{msg_id}.txt" , "w")
+    f.write(str(soup.prettify()))
+    f.close()
+
+    caption = "Here Your Web Source"
+    try:
+    	app.send_document(message.chat.id ,document = f"{msg_id}.txt",caption = caption)
+    except ValueError as ve:
+    	ms.edit("```file Size value error")
+    	os.remove(f"{msg_id}.txt")
+    	return
+    ms.delete()
+    os.remove(f"{msg_id}.txt")
+	
 app.run()
