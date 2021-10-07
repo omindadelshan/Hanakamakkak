@@ -1,3 +1,5 @@
 Pyrogram
 requests
 bs4
+TgCrypto
+beautifulsoup4
